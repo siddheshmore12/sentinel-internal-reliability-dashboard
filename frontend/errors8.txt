@@ -1,0 +1,7 @@
+﻿src/App.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/LatencyChart.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/Layout.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/ServiceCard.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/StatusBadge.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/pages/Dashboard.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/pages/ServiceDetail.tsx(1,1): error TS6192: All imports in import declaration are unused.
