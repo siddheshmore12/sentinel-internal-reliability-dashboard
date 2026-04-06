@@ -59,5 +59,10 @@ Reviewers evaluating this demo should note:
 3. Submit a "Critical" incident, and observe the `Risk Assessment Engine` intercept and compute Incident Priority automatically to prevent human error during triage.
 4. Open `:3000` to review the Grafana telemetry sync in real-time.
 
+## Deployment
+
+Sentinel can be easily deployed to modern serverless cloud platforms. We use Render, Vercel, Neon Postgres, and Upstash Redis. 
+See the [Cloud Deployment Guide](docs/deployment.md) for full step-by-step instructions.
+
 ---
 _A portfolio project focused on clear internal reliability signals, extensible code, and actionable engineering outcomes._

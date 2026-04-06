@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     APP_NAME: str = "Sentinel"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
+    
+    # ── Security ──────────────────────────────────────────────────────────────
+    FRONTEND_URL: str = "http://localhost:5173"
 
     # ── PostgreSQL ────────────────────────────────────────────────────────────
     DATABASE_URL: str = (
