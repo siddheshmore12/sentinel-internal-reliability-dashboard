@@ -59,15 +59,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from prometheus_client import make_asgi_app
+
 # ── Health probe (used by Docker Compose healthcheck) ─────────────────────────
 @app.get("/health", tags=["system"])
 async def health_probe() -> dict:
     return {"status": "ok", "version": settings.APP_VERSION}
 
 
+# ── Metrics endpoint (Prometheus) ─────────────────────────────────────────────
+metrics_app = make_asgi_app()
+app.mount("/metrics", metrics_app)
+
+
 # ── Routes registered in Phase 3 ──────────────────────────────────────────────
-# from app.api.routes import services, incidents, health_checks, dashboard
-# app.include_router(services.router, prefix="/api/v1/services", tags=["services"])
-# app.include_router(incidents.router, prefix="/api/v1/incidents", tags=["incidents"])
-# app.include_router(health_checks.router, prefix="/api/v1/health-checks", tags=["health-checks"])
-# app.include_router(dashboard.router, prefix="/api/v1/dashboard", tags=["dashboard"])
+from app.api.routes import dashboard, health_checks, incidents, maintenance, services
+
+app.include_router(services.router, prefix="/api/v1/services", tags=["services"])
+app.include_router(maintenance.router, prefix="/api/v1/services", tags=["maintenance"])
+app.include_router(incidents.router, prefix="/api/v1/incidents", tags=["incidents"])
+app.include_router(health_checks.router, prefix="/api/v1/health-checks", tags=["health-checks"])
+app.include_router(dashboard.router, prefix="/api/v1/dashboard", tags=["dashboard"])
