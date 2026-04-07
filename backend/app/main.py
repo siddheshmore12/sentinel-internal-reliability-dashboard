@@ -10,6 +10,7 @@ Startup/shutdown lifecycle:
 Routes are registered in Phase 3 (api/routes/).
 """
 
+import asyncio
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
@@ -18,6 +19,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 from app.core.database import Base, engine
+from app.worker import worker_loop
 
 settings = get_settings()
 
@@ -30,9 +32,18 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         # This create_all is a convenient local development fallback only.
         await conn.run_sync(Base.metadata.create_all)
 
+    # Start the embedded background worker
+    worker_task = asyncio.create_task(worker_loop())
+
     yield
 
     # ── Shutdown ──────────────────────────────────────────────────────────────
+    worker_task.cancel()
+    try:
+        await worker_task
+    except asyncio.CancelledError:
+        pass
+    
     await engine.dispose()
 
 
